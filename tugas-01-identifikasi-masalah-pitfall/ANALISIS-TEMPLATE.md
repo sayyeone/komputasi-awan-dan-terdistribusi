@@ -9,7 +9,7 @@
 | Difa Auliya Andini Putri | 103072400112 | Latency is Zero |
 | Yolanda Elva Angelica | 103072400125 | Single Point of Failure / Monolitik |
 
-## Pitfall 1: [nama pitfall] — ditulis oleh [nama]
+## Pitfall 1: Network Is Always Realiable — ditulis oleh Glory Leonthine Angi'
 
 **Bukti di skenario:** [kutip/paraphrase bagian skenario]
 
