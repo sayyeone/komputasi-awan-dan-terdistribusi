@@ -24,10 +24,10 @@
   - Solusi yang diusulkan sudah sesuai. Namun, bagian trade off perlu menjelaskan bahwa menambah server cadangan membutuhkan biaya tambahan, sedangkan mengelola beberapa layanan dan server membuat pemeliharaan sistem lebih rumit.
 
 - Difa mengomentari analisis Glory (Network Is Always Reliable):
-- Pitfall dan kutipan skenario yang digunakan sudah sesuai.
-- Penjelasan mengenai jaringan yang dapat mengalami gangguan dan respons yang tidak sampai sudah cukup jelas.
-- Dampak dan solusi timeout serta retry sudah sesuai dengan masalah yang terjadi pada FoodGo.
-- Bagian trade-off sudah baik karena menjelaskan bahwa retry dapat menambah beban server dan membuat pengguna menunggu lebih lama.
+    - Pitfall dan kutipan skenario yang digunakan sudah sesuai.
+    - Penjelasan mengenai jaringan yang dapat mengalami gangguan dan respons yang tidak sampai sudah cukup jelas.
+    - Dampak dan solusi timeout serta retry sudah sesuai dengan masalah yang terjadi pada FoodGo.
+    - Bagian trade-off sudah baik karena menjelaskan bahwa retry dapat menambah beban server dan membuat pengguna menunggu lebih lama.
 ## Log Penggunaan AI (Level 2)
 
 > Wajib diisi sesuai kebijakan Level 2 di [`../RUBRIK-UMUM.md`](../RUBRIK-UMUM.md). Tulis "Tidak memakai AI" pada baris pertama jika memang tidak dipakai. Hanya untuk brainstorming ide/outline — bukan untuk kode/analisis/teks akhir.
