@@ -11,8 +11,9 @@
 - ...
 
 ## Review Silang
-- [Nama] mengomentari analisis [Nama lain]: ...
-
+- Adisty mengomentari analisis Difa (Latency Is Zero):
+  - Pitfall dan kutipan skenarionya sudah tepat, trade-off timeout terlalu singkat vs terlalu lama juga masuk akal.
+  - Bagian "Kenapa ini keliru" masih terlalu generik. Sebaiknya ditambah bahwa latency berubah-ubah dan makin lama saat trafik tinggi (jam makan siang/promo).
 ## Log Penggunaan AI (Level 2)
 
 > Wajib diisi sesuai kebijakan Level 2 di [`../RUBRIK-UMUM.md`](../RUBRIK-UMUM.md). Tulis "Tidak memakai AI" pada baris pertama jika memang tidak dipakai. Hanya untuk brainstorming ide/outline — bukan untuk kode/analisis/teks akhir.
