@@ -69,5 +69,5 @@ Ada dua masalah, yang pertama Single Point of Failure, yaitu Ketika semua fitur 
 ---
 
 ## Kesimpulan Kelompok
+Berdasarkan hasil analisis, masalah utama pada sistem FoodGo disebabkan oleh beberapa asumsi dan rancangan yang kurang sesuai dengan karakteristik sistem terdistribusi. Pitfall yang ditemukan yaitu **Network Is Always Reliable, Transport Cost Is Zero, Latency Is Zero, dan Single Point of Failure/Monolitik**. Masalah tersebut dapat menyebabkan request tertahan, aplikasi menjadi lambat, penggunaan resource meningkat, hingga server mengalami crash ketika terjadi lonjakan trafik. Untuk mengatasi masalah tersebut, FoodGo perlu menggunakan arsitektur yang lebih **terpisah dan tidak bergantung pada satu server atau proses saja**. Komunikasi antarservice juga perlu dilengkapi dengan timeout dan mekanisme penanganan kegagalan, serta penggunaan resource dan komunikasi antarservice perlu diperhatikan.
 
-[Ringkasan: jika FoodGo memperbaiki ketiga pitfall ini, apa arsitektur yang disarankan secara garis besar? Kaitkan dengan Tugas 2.]
