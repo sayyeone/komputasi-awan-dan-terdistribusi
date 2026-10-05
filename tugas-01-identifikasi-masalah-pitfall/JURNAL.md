@@ -2,8 +2,8 @@
 
 > Isi jurnal ini selama proses diskusi berlangsung, bukan ditulis ulang rapi di akhir. Tulis dengan gaya bebas — poin diskusi, kebuntuan, perubahan pikiran.
 
-## [Tanggal diskusi 1]
-- Peserta: [nama-nama yang hadir]
+## 05/10/2026
+- Peserta: Difa Auliya Andini Putri, Adisty Fatika Ardani, Yolanda Elva Angelica, Glory Leonthine Angi'
 - Poin diskusi: ...
 - Perbedaan pendapat (jika ada): ...
 
