@@ -6,7 +6,7 @@
 |---|---|---|
 | [nama 1] | [nim] | [pitfall/bagian yang dikerjakan] |
 | [nama 2] | [nim] | [pitfall/bagian yang dikerjakan] |
-| [nama 3] | [nim] | [pitfall/bagian yang dikerjakan] |
+| Difa Auliya Andini Putri | 103072400112 | Latency is Zero |
 | Yolanda Elva Angelica | 103072400125 | Single Point of Failure / Monolitik |
 
 ## Pitfall 1: [nama pitfall] — ditulis oleh [nama]
