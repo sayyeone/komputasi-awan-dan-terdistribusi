@@ -4,8 +4,8 @@
 
 | Nama | NIM | Kontribusi |
 |---|---|---|
-| [nama 1] | [nim] | [pitfall/bagian yang dikerjakan] |
-| [nama 2] | [nim] | [pitfall/bagian yang dikerjakan] |
+| Glory Leonthine Angi' | 103072400058 | The Network Is Reliable |
+| Adisty Fatika Ardani | 103072400091 | Transport Cost Is Zero |
 | Difa Auliya Andini Putri | 103072400112 | Latency is Zero |
 | Yolanda Elva Angelica | 103072400125 | Single Point of Failure / Monolitik |
 
