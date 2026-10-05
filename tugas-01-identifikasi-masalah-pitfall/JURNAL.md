@@ -20,7 +20,8 @@
   - Klaim "bandwidth habis" bertentangan dengan skenario. Karena modul monolitik saling panggil di dalam satu program, bukan lewat jaringan
 
 - Glory mengomentari analsis Yolanda (Single Point of Failure / Monolitik):
-  - 
+  - Pitfall, kutipan skenario, dan dampaknya sudah sesuai dengan skenario.
+  - Solusi yang diusulkan sudah sesuai. Namun, bagian trade off perlu menjelaskan bahwa menambah server cadangan membutuhkan biaya tambahan, sedangkan mengelola beberapa layanan dan server membuat pemeliharaan sistem lebih rumit.
 ## Log Penggunaan AI (Level 2)
 
 > Wajib diisi sesuai kebijakan Level 2 di [`../RUBRIK-UMUM.md`](../RUBRIK-UMUM.md). Tulis "Tidak memakai AI" pada baris pertama jika memang tidak dipakai. Hanya untuk brainstorming ide/outline — bukan untuk kode/analisis/teks akhir.
