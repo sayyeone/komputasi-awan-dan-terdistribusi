@@ -25,4 +25,3 @@
 | Tanggal | Tool AI | Prompt yang diberikan | Ringkasan saran/ide AI | Bagaimana diolah jadi tulisan/kode sendiri |
 |---|---|---|---|---|
 | 05/10/2026 | Claude | Menulis draft pitfall "Latency Is Zero" lalu minta dikoreksi | AI menyarankan fokus pitfall diganti ke asumsi "panggilan antar service instan", memberi pola 4 bagian (bukti, kenapa keliru, dampak, solusi+trade-off), dan menolak menuliskan versi jadinya | Draft ditulis ulang sendiri mengikuti pola tersebut, lalu direvisi (dampak dipecah, ditambah solusi pendukung) |
-| 05/10/2026 | Claude | Menanyakan arti istilah SPOF dan monolitik, meminta contoh isi bagian analisis SPOF | AI menjelaskan istilah dengan analogi | Ditulis ulang dengan kata-kata sendiri, dampak ke bisnis ditambahkan, dan komentar review silang ditulis sendiri |
