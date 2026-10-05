@@ -34,21 +34,13 @@
 **Bukti di skenario:**
 "tidak ada timeout sama sekali pada pemanggilan antar service (modul pesanan memanggil modul pembayaran dan menunggu tanpa batas waktu)."
 
-**Kenapa ini keliru:**
+**Kenapa ini keliru:** Komunikasi antar service tidak selalu berlangsung secara langsung atau cepat. Proses komunikasi dapat mengalami keterlambatan karena beban server, kondisi jaringan, atau service yang sedang bermasalah. Karena itu, menganggap komunikasi tidak memiliki latency dapat membuat sistem menunggu terlalu lama.
 
-Komunikasi antar service tidak selalu berlangsung secara langsung atau cepat. Proses komunikasi dapat mengalami keterlambatan karena beban server, kondisi jaringan, atau service yang sedang bermasalah. Karena itu, menganggap komunikasi tidak memiliki latency dapat membuat sistem menunggu terlalu lama.
+**Dampak ke FoodGo:** Modul pesanan dapat terus menunggu respons dari modul pembayaran. Jika terjadi banyak request saat trafik sedang tinggi, semakin banyak proses yang tertahan dan menggunakan resource server. Hal ini dapat membuat aplikasi menjadi lambat, request mengalami timeout, bahkan dapat menyebabkan server kewalahan dan crash.
 
-**Dampak ke FoodGo:**
+**Solusi desain awal:** Menerapkan timeout pada komunikasi antar service, sehingga sistem tidak menunggu respons tanpa batas waktu. Jika terjadi timeout, sistem dapat menangani kegagalan tersebut, misalnya dengan melakukan retry secara terbatas atau memberikan status bahwa proses belum berhasil.
 
-Modul pesanan dapat terus menunggu respons dari modul pembayaran. Jika terjadi banyak request saat trafik sedang tinggi, semakin banyak proses yang tertahan dan menggunakan resource server. Hal ini dapat membuat aplikasi menjadi lambat, request mengalami timeout, bahkan dapat menyebabkan server kewalahan dan crash.
-
-**Solusi desain awal:**
-
-Menerapkan timeout pada komunikasi antar service, sehingga sistem tidak menunggu respons tanpa batas waktu. Jika terjadi timeout, sistem dapat menangani kegagalan tersebut, misalnya dengan melakukan retry secara terbatas atau memberikan status bahwa proses belum berhasil.
-
-**Trade-off:**
-
-Timeout yang terlalu singkat dapat membuat proses yang sebenarnya masih berjalan dianggap gagal. Sebaliknya, timeout yang terlalu lama tetap dapat membuat resource tertahan. Oleh karena itu, nilai timeout perlu disesuaikan dengan kebutuhan sistem dan dapat dikombinasikan dengan mekanisme retry terbatas.
+**Trade-off:** Timeout yang terlalu singkat dapat membuat proses yang sebenarnya masih berjalan dianggap gagal. Sebaliknya, timeout yang terlalu lama tetap dapat membuat resource tertahan. Oleh karena itu, nilai timeout perlu disesuaikan dengan kebutuhan sistem dan dapat dikombinasikan dengan mekanisme retry terbatas.
 
 
 ---
