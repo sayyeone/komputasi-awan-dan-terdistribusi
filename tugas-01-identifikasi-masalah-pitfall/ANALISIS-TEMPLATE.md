@@ -23,9 +23,16 @@
 
 ---
 
-## Pitfall 2: [nama pitfall] — ditulis oleh [nama]
+## Pitfall 2: Transport Cost Is Zero — ditulis oleh Adisty Fatika Ardani
 
-(ulangi struktur di atas)
+**Bukti di skenario:**
+"satu server yang menangani semua modul (pesanan, pembayaran, notifikasi kurir) kewalahan karena semuanya berjalan di satu proses monolitik yang sama"
+
+**Kenapa ini keliru:** pada sistem terdistribusi nyata, mengirim data antar service itu ada ongkosnya misalkan data harus diubah ke format yang bisa dikirim (misalnya JSON), dikirim lewat jaringan yang bandwidth-nya terbatas, lalu diubah balik di sisi penerima. Semua itu memakai CPU, memori, dan bandwidth, dan makin banyak data atau panggilan makin besar juga ongkosnya.
+
+**Dampak ke FoodGo:** Karena tiap pesanan memicu panggilan ke pembayaran dan notifikasi, saat jam makan siang atau promo besar jumlah panggilan ikut melonjak. Akibatnya CPU dan bandwidth server habis untuk urusan kirim-terima data, sehingga aplikasi jadi sangat lambat dan beberapa request timeout. Karena semuanya masih ditanggung satu server, beban itu menumpuk sampai server kewalahan dan crash total, dan solusi "tambah server lebih besar" cuma menaikkan biaya tanpa menghilangkan pemborosannya.
+
+**Trade-off:** Solusi awalnya adalah mengurangi jumlah dan ukuran panggilan antar service, misalnya payload dibuat seringkas mungkin dan notifikasi kurir dikirim secara asynchronous lewat antrean, bukan ditunggu satu per satu. Sebagai pendukung, panggilan yang sifatnya mirip bisa digabung (batching) supaya overhead per panggilan berkurang. Kekurangannya, antrean dan batching bikin sistem lebih rumit dan notifikasi bisa terlambat sedikit, jadi ada trade-off antara efisiensi dan seberapa real-time notifikasinya.
 
 ---
 
