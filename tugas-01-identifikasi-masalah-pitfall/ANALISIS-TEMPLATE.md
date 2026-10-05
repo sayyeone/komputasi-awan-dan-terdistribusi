@@ -11,15 +11,15 @@
 
 ## Pitfall 1: Network Is Always Realiable — ditulis oleh Glory Leonthine Angi'
 
-**Bukti di skenario:** [kutip/paraphrase bagian skenario]
+**Bukti di skenario:** "Tim menemukan bahwa kode mereka menulis asumsi seperti # network is always reliable, no need for retry"
 
-**Kenapa ini keliru:** [penjelasan]
+**Kenapa ini keliru:** Jaringan tidak selalu dapat diandalkan karena koneksinya bisa mengalami gangguan. Ketika koneksi bermasalah, informasi yang dikirim bisa terlambat diterima atau tidak sampai sama sekali. Gangguan ini juga bisa terjadi pada komunikasi antarlayanan. Pesan bisa sudah sampai ke tujuan, tetapi balasannya tidak diterima oleh pengirim. Oleh karena itu, pengirim tidak dapat memastikan keberhasilan komunikasi hanya karena pesan sudah dikirim. Hal inilah yang membuat asumsi bahwa jaringan selalu dapat diandalkan menjadi keliru.
 
-**Dampak ke FoodGo:** [mekanisme kegagalan konkret]
+**Dampak ke FoodGo:** Jika respons pembayaran tidak diterima, modul pesanan terus menunggu karena tidak ada timeout. Banyak proses yang tertahan dapat menghabiskan sumber daya server sehingga aplikasi melambat dan permintaan lain dapat mengalami timeout. Akibatnya, pengguna harus menunggu lebih lama untuk mendapatkan kepastian pesanan.
 
-**Solusi desain awal:** [usulan solusi]
+**Solusi desain awal:** Menerapkan timeout agar modul pesanan tidak menunggu balasan pembayaran tanpa batas. Jika terjadi gangguan jaringan sementara, sistem dapat mencoba mengirim ulang permintaan dengan jumlah percobaan yang dibatasi. Setiap percobaan diberi jeda agar tidak membebani server dan jedanya diperpanjang jika masih gagal.
 
-**Trade-off:** [apa yang dikorbankan/risiko dari solusi ini]
+**Trade-off:** Mengirim ulang permintaan dapat menambah beban server yang sedang kewalahan. Jeda antar percobaan juga membuat pengguna menunggu lama, oleh karena itu jumlah percobaan ulang dan total waktu perlu dibatasi.
 
 ---
 
