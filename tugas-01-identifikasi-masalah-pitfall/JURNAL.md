@@ -18,6 +18,9 @@
 - Yolanda mengomentari analisis Adisty (Transport Cost Is Zero):
   - Rantai sebab-akibatnya jelas. Kemudian untuk Trade-off-nya juga nyata: antrean dan batching membuat sistem lebih rumit dan notifikasi bisa terlambat.
   - Klaim "bandwidth habis" bertentangan dengan skenario. Karena modul monolitik saling panggil di dalam satu program, bukan lewat jaringan
+
+- Glory mengomentari analsis Yolanda (Single Point of Failure / Monolitik):
+  - 
 ## Log Penggunaan AI (Level 2)
 
 > Wajib diisi sesuai kebijakan Level 2 di [`../RUBRIK-UMUM.md`](../RUBRIK-UMUM.md). Tulis "Tidak memakai AI" pada baris pertama jika memang tidak dipakai. Hanya untuk brainstorming ide/outline — bukan untuk kode/analisis/teks akhir.
