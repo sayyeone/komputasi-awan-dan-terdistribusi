@@ -4,22 +4,22 @@
 
 | Nama | NIM | Kontribusi |
 |---|---|---|
-| [nama 1] | [nim] | [pitfall/bagian yang dikerjakan] |
-| [nama 2] | [nim] | [pitfall/bagian yang dikerjakan] |
+| Glory Leonthine Angi' | 103072400058 | The Network Is Reliable |
+| Adisty Fatika Ardani | 103072400091 | Transport Cost Is Zero |
 | Difa Auliya Andini Putri | 103072400112 | Latency is Zero |
 | Yolanda Elva Angelica | 103072400125 | Single Point of Failure / Monolitik |
 
-## Pitfall 1: [nama pitfall] — ditulis oleh [nama]
+## Pitfall 1: Network Is Always Realiable — ditulis oleh Glory Leonthine Angi'
 
-**Bukti di skenario:** [kutip/paraphrase bagian skenario]
+**Bukti di skenario:** "Tim menemukan bahwa kode mereka menulis asumsi seperti # network is always reliable, no need for retry"
 
-**Kenapa ini keliru:** [penjelasan]
+**Kenapa ini keliru:** Jaringan tidak selalu dapat diandalkan karena koneksinya bisa mengalami gangguan. Ketika koneksi bermasalah, informasi yang dikirim bisa terlambat diterima atau tidak sampai sama sekali. Gangguan ini juga bisa terjadi pada komunikasi antarlayanan. Pesan bisa sudah sampai ke tujuan, tetapi balasannya tidak diterima oleh pengirim. Oleh karena itu, pengirim tidak dapat memastikan keberhasilan komunikasi hanya karena pesan sudah dikirim. Hal inilah yang membuat asumsi bahwa jaringan selalu dapat diandalkan menjadi keliru.
 
-**Dampak ke FoodGo:** [mekanisme kegagalan konkret]
+**Dampak ke FoodGo:** Jika respons pembayaran tidak diterima, modul pesanan terus menunggu karena tidak ada timeout. Banyak proses yang tertahan dapat menghabiskan sumber daya server sehingga aplikasi melambat dan permintaan lain dapat mengalami timeout. Akibatnya, pengguna harus menunggu lebih lama untuk mendapatkan kepastian pesanan.
 
-**Solusi desain awal:** [usulan solusi]
+**Solusi desain awal:** Menerapkan timeout agar modul pesanan tidak menunggu balasan pembayaran tanpa batas. Jika terjadi gangguan jaringan sementara, sistem dapat mencoba mengirim ulang permintaan dengan jumlah percobaan yang dibatasi. Setiap percobaan diberi jeda agar tidak membebani server dan jedanya diperpanjang jika masih gagal.
 
-**Trade-off:** [apa yang dikorbankan/risiko dari solusi ini]
+**Trade-off:** Mengirim ulang permintaan dapat menambah beban server yang sedang kewalahan. Jeda antar percobaan juga membuat pengguna menunggu lama, oleh karena itu jumlah percobaan ulang dan total waktu perlu dibatasi.
 
 ---
 
@@ -69,5 +69,5 @@ Ada dua masalah, yang pertama Single Point of Failure, yaitu Ketika semua fitur 
 ---
 
 ## Kesimpulan Kelompok
+Berdasarkan hasil analisis, masalah utama pada sistem FoodGo disebabkan oleh beberapa asumsi dan rancangan yang kurang sesuai dengan karakteristik sistem terdistribusi. Pitfall yang ditemukan yaitu **Network Is Always Reliable, Transport Cost Is Zero, Latency Is Zero, dan Single Point of Failure/Monolitik**. Masalah tersebut dapat menyebabkan request tertahan, aplikasi menjadi lambat, penggunaan resource meningkat, hingga server mengalami crash ketika terjadi lonjakan trafik. Untuk mengatasi masalah tersebut, FoodGo perlu menggunakan arsitektur yang lebih **terpisah dan tidak bergantung pada satu server atau proses saja**. Komunikasi antarservice juga perlu dilengkapi dengan timeout dan mekanisme penanganan kegagalan, serta penggunaan resource dan komunikasi antarservice perlu diperhatikan.
 
-[Ringkasan: jika FoodGo memperbaiki ketiga pitfall ini, apa arsitektur yang disarankan secara garis besar? Kaitkan dengan Tugas 2.]
