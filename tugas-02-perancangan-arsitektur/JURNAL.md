@@ -29,6 +29,27 @@ Pemilihan Arsitektur yang kami gunakan adalah Service-Oriented Architecture (SOA
 
 menggunakan kombinasi SOA dan Pub-Sub, karena kebutuhan FoodGo bukan hanya memisahkan komponen, tetapi juga membuat komunikasi antarkomponen lebih fleksibel. Dalam laporan, jelaskan bahwa pemisahan layanan memungkinkan deployment independen, sedangkan Pub-Sub membantu mengurangi ketergantungan langsung untuk pemberitahuan pesanan.
 
+## Nomor 2 (Difa Auliya Andini Putri - 103072400112)
+```mermaid
+flowchart ID
+    C["Pelanggan"]
+    RC["Restaurant Catalog Service"]
+    O["Order Service"]
+    P["Payment Service"]
+    B[("Message Broker")]
+    R["Restaurant Order Handler"]
+    N["Courier / Notification Service"]
+
+    C -->|"HTTP: melihat menu"| RC
+    C -->|"HTTP: membuat pesanan"| O
+
+    O <-->|"API/RPC sinkron"| P
+
+    O -->|"Publish: OrderPaid"| B
+    B -->|"Subscribe: OrderPaid"| R
+    B -->|"Subscribe: OrderPaid"| N
+```
+
 ## Log Penggunaan AI (Level 2)
 
 > Wajib diisi sesuai kebijakan Level 2 di [`../RUBRIK-UMUM.md`](../RUBRIK-UMUM.md). Tulis "Tidak memakai AI" pada baris pertama jika memang tidak dipakai. Hanya untuk brainstorming ide/outline — bukan untuk kode/analisis/teks akhir.
