@@ -31,7 +31,7 @@ menggunakan kombinasi SOA dan Pub-Sub, karena kebutuhan FoodGo bukan hanya memis
 
 ## Nomor 2 (Difa Auliya Andini Putri - 103072400112)
 ```mermaid
-flowchart ID
+flowchart TD
     C["Pelanggan"]
     RC["Restaurant Catalog Service"]
     O["Order Service"]
