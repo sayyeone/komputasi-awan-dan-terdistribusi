@@ -42,20 +42,29 @@ flowchart TD
 
     C -->|"1. HTTP sinkron: 
             melihat menu"| RC
-    C -->|"2. HTTP sinkron: membuat pesanan"| O
+    C -->|"2. HTTP sinkron:
+            membuat pesanan"| O
 
-    O -->|"3. API/RPC sinkron: validasi menu dan harga"| RC
+    O -->|"3. API/RPC sinkron: 
+            validasi menu dan harga"| RC
 
-    O -->|"4. Request sinkron: proses pembayaran"| P
-    P -->|"5. Response sinkron: status pembayaran"| O
+    O -->|"4. Request sinkron: 
+            proses pembayaran"| P
+    P -->|"5. Response sinkron: 
+            status pembayaran"| O
 
-    O -->|"6. Publish asinkron: OrderPaid"| B
-    B -->|"7. Subscribe asinkron: OrderPaid"| R
+    O -->|"6. Publish asinkron: 
+            OrderPaid"| B
+    B -->|"7. Subscribe asinkron: 
+            OrderPaid"| R
 
-    R -->|"8. Publish asinkron: RestaurantAccepted"| B
-    B -->|"9. Subscribe asinkron: RestaurantAccepted"| N
+    R -->|"8. Publish asinkron: 
+            RestaurantAccepted"| B
+    B -->|"9. Subscribe asinkron: 
+            RestaurantAccepted"| N
 
-    N -->|"10. Notifikasi penugasan kurir"| C
+    N -->|"10. Notifikasi penugasan 
+            kurir"| C
 ```
 
 ## Log Penggunaan AI (Level 2)
