@@ -5,7 +5,7 @@
 - Kenapa akhirnya pilih [SOA/Pub-Sub]: ...
 - Revisi diagram (versi 1 → versi 2, apa yang berubah dan kenapa): ...
 
-## Jawaban Yolanda (Orang 1)
+## Nomor 1 (Yolanda Elva Angelica - 103072400125)
 
 ### 1. Analisis Masalah Monolitik FoodGo
 
