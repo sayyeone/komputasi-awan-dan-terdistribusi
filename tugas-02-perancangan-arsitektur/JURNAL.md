@@ -40,7 +40,8 @@ flowchart TD
     R["Restaurant Order Handler"]
     N["Courier / Notification Service"]
 
-    C -->|"1. HTTP sinkron: melihat menu"| RC
+    C -->|"1. HTTP sinkron: 
+            melihat menu"| RC
     C -->|"2. HTTP sinkron: membuat pesanan"| O
 
     O -->|"3. API/RPC sinkron: validasi menu dan harga"| RC
