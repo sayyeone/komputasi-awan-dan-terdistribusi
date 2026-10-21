@@ -1,8 +1,8 @@
 # Jurnal Proses — Tugas 2
 
-## [Tanggal]
-- Opsi arsitektur yang dipertimbangkan: ...
-- Kenapa akhirnya pilih [SOA/Pub-Sub]: ...
+## [19 Oktober 2026]
+- Opsi arsitektur yang dipertimbangkan: SOA sebagai utama dan Pub Sub sebagai pelengkap
+- Kenapa akhirnya pilih [SOA/Pub-Sub]: SOA memisahkan layanan agar dapat diperbarui secara mandiri, sedangkan Pub Sub mengurangi ketergantungan langsung untuk pemberitahuan pesanan.
 - Revisi diagram (versi 1 → versi 2, apa yang berubah dan kenapa): ...
 
 ## Nomor 1 (Yolanda Elva Angelica - 103072400125)
@@ -102,6 +102,30 @@ Langkah 10 adalah kelanjutan proses, yaitu pengiriman notifikasi oleh Courier/No
 - **Langkah 6-9:** komunikasi event melalui Message Broker sesuai pola Pub-Sub (Order Service, Restaurant Order Handler, Courier/Notification Service).
 - **Langkah 10:** pengiriman notifikasi oleh Courier/Notification Service ke pelanggan.
 
+## Nomor 4 - Analisis Pengurangan Coupling dan Trade-off (Glory Leonthine Angi' - 103072400058)
+
+#### Pengurangan Coupling
+Dengan menggabungkan konsep Service Oriented Architecture (SOA) dan Publish Subscribe (Pub Sub), kita bisa membuat antar layanan di FoodGo mengurangi ketergantungan antarlayanan(coupling) dan tugas tiap layanan jadi lebih fokus dan komunikasi langsung antar layanan bisa diminimalkan.
+
+Dari sisi SOA, setiap service mulai dari pesanan, pembayaran, katalog menu, penerimaan pesanan di resto, sampai kurir punya ranah tugasnya masing-masing. Efek positifnya, kita bisa update atau menjalankan service tersebut secara terpisah. Contohnya, pembaruan layanan kurir tidak mengharuskan layanan katalog dan pembayaran ikut restart, selama kontrak API dan format event tidak berubah.
+
+Sementara di sisi Pub Sub, order service menerbitkan event OrderPaid melalui message broker. Order service tidak perlu mengetahui alamat restaurant order handler atau menunggu restoran selesai memproses pesanan. Saat restoran menyetujui pesanan, event RestaurantAccepted akan otomatis diteruskan melalui broker ke courier/notification service.
+
+Meskipun demikian, coupling tidak sepenuhnya hilang. Order service masih berkomunikasi secara sinkron dengan Restaurant Catalog Service untuk memvalidasi menu, serta Payment Service untuk mengetahui status pembayaran.
+
+#### Kelebihan Arsitektur
+**1. Pembaruan lebih mandiri.** Layanan kurir dapat diperbarui tanpa membuat seluruh layanan FoodGo ikut restart.
+**2. Kapasitas lebih fleksibel.** Kapasitas layanan pesanan dapat ditambah saat ramai tanpa harus menambah kapasitas semua layanan.
+**3. Komunikasi lebih fleksibel.** Pengirim event tidak harus menunggu penerima selesai memprosesnya
+
+#### Kekurangan dan Trade off
+**1. Pelacakan error lebih rumit.** Alur pesanan melewati beberapa layanan dan broker sehingga sumber masalah lebih sulit ditemukan.
+**2. Bergantung pada jaringan dan broker.** Gangguan pada keduanya dapat menghambat komunikasi dan proses pesanan.
+**3. Event bisa terlambat atau diterima berulang.** Sistem perlu menangani kondisi ini agar pesanan tidak diproses 2 kali.
+**4. Pengelolaan lebih kompleks.** Setiap layanan dan broker membutuhkan konfigurasi serta pemantauan.
+
+### Kesimpulan
+Kombinasi SOA dan Publish Subscribe membantu FoodGo mengurangi ketergantungan antarlayanan. SOA memungkinkan layanan diperbarui dan ditambah kapasitasnya secara terpisah, sedangkan Pub Sub mendukung komunikasi event melalui message broker tanpa menunggu penerima selesai memprosesnya. Namun, rancangan ini membutuhkan pemantauan antarlayanan, penanganan kegagalan jaringan dan broker, serta pengelolaan event agar pesanan tidak diproses berulang.
 
 ## Log Penggunaan AI (Level 2)
 
