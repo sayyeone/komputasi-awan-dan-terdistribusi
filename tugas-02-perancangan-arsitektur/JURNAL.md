@@ -114,14 +114,20 @@ Sementara di sisi Pub Sub, order service menerbitkan event OrderPaid melalui mes
 Meskipun demikian, coupling tidak sepenuhnya hilang. Order service masih berkomunikasi secara sinkron dengan Restaurant Catalog Service untuk memvalidasi menu, serta Payment Service untuk mengetahui status pembayaran.
 
 #### Kelebihan Arsitektur
+
 **1. Pembaruan lebih mandiri.** Layanan kurir dapat diperbarui tanpa membuat seluruh layanan FoodGo ikut restart.
+
 **2. Kapasitas lebih fleksibel.** Kapasitas layanan pesanan dapat ditambah saat ramai tanpa harus menambah kapasitas semua layanan.
+
 **3. Komunikasi lebih fleksibel.** Pengirim event tidak harus menunggu penerima selesai memprosesnya
 
 #### Kekurangan dan Trade off
 **1. Pelacakan error lebih rumit.** Alur pesanan melewati beberapa layanan dan broker sehingga sumber masalah lebih sulit ditemukan.
+
 **2. Bergantung pada jaringan dan broker.** Gangguan pada keduanya dapat menghambat komunikasi dan proses pesanan.
+
 **3. Event bisa terlambat atau diterima berulang.** Sistem perlu menangani kondisi ini agar pesanan tidak diproses 2 kali.
+
 **4. Pengelolaan lebih kompleks.** Setiap layanan dan broker membutuhkan konfigurasi serta pemantauan.
 
 ### Kesimpulan
