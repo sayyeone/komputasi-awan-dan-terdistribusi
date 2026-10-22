@@ -37,6 +37,32 @@ docker build -t foodgo-order-sim .
 docker run --rm foodgo-order-sim
 ```
 
+## Analisis Multithreading dan Race Condition
+
+### 1. Race Condition pada Simulasi FoodGo
+
+Race condition merupakan kondisi ketika beberapa thread mengakses dan mengubah data bersama secara bersamaan sehingga menghasilkan nilai yang tidak konsisten. Pada simulasi FoodGo, kondisi ini dapat terjadi ketika beberapa thread memproses pesanan dan memperbarui variabel `processed_count` secara bersamaan.
+
+Variabel `processed_count` digunakan untuk menghitung jumlah pesanan yang berhasil diproses. Tanpa mekanisme penguncian, dua thread dapat membaca nilai penghitung yang sama sebelum keduanya menambahkan angka. Akibatnya, salah satu penambahan dapat tertimpa sehingga jumlah pesanan yang tercatat lebih sedikit daripada jumlah sebenarnya.
+
+Pada pengujian tanpa lock, jumlah pesanan yang tercatat beberapa kali hanya mencapai 99, 97, 93, atau 94 dari total 100 pesanan. Hal ini menunjukkan bahwa race condition dapat menyebabkan ketidaksesuaian data.
+
+### 2. Perbaikan Menggunakan `threading.Lock()`
+
+Untuk mengatasi race condition, digunakan `threading.Lock()` pada bagian kode yang mengubah variabel `processed_count`. Lock memastikan bahwa hanya satu thread yang dapat menjalankan bagian kode tersebut pada satu waktu.
+
+Dengan mekanisme ini, thread lain harus menunggu hingga thread yang sedang memegang lock selesai memperbarui penghitung. Setelah lock dilepaskan, thread berikutnya dapat melanjutkan prosesnya.
+
+Hasil pengujian setelah penggunaan lock menunjukkan bahwa jumlah pesanan berhasil tercatat sebanyak 100 dari total 100 pesanan. Dengan demikian, penggunaan lock membantu menjaga konsistensi data ketika beberapa thread mengakses variabel bersama.
+
+### 3. Alasan Menggunakan Multithreading
+
+Multithreading dipilih karena simulasi FoodGo membutuhkan beberapa tugas pemrosesan pesanan berjalan secara bersamaan dalam satu proses aplikasi. Beberapa thread dapat berbagi memori yang sama, sehingga data pesanan dapat diakses tanpa harus menggunakan mekanisme komunikasi antarproses yang lebih kompleks.
+
+Dibandingkan dengan multiprocessing atau pembuatan proses OS terpisah untuk setiap permintaan, multithreading dapat mengurangi overhead pembuatan proses dan penggunaan sumber daya untuk skenario simulasi ini. Namun, karena thread berbagi memori, akses terhadap data bersama perlu dikelola dengan benar menggunakan mekanisme sinkronisasi seperti `threading.Lock()`.
+
+Pendekatan ini sesuai untuk memperbaiki simulasi FoodGo yang sebelumnya berisiko mengalami pemborosan sumber daya akibat pembuatan proses OS yang berat untuk setiap permintaan. Meskipun demikian, multithreading tidak otomatis lebih cepat untuk semua jenis pekerjaan; efektivitasnya bergantung pada karakteristik beban kerja dan kebutuhan aplikasi.
+
 ## Struktur Submission
 
 ```
