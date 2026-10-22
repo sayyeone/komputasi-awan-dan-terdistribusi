@@ -17,7 +17,7 @@ NUM_WORKERS = 10        # jumlah thread pekerja
 # False = tanpa lock
 # True = dengan lock
 
-USE_LOCK = False
+USE_LOCK = True
 
 # Counter bersama untuk menghitung total pesanan yang berhasil diproses.
 # Sengaja rawan race condition jika diakses tanpa proteksi.
