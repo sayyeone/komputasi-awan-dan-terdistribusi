@@ -36,6 +36,37 @@ python3 src/node.py --id 5 --port 5005 --peers 5001,5002,5003,5004
 2. **Leader mati**: matikan (Ctrl+C) proses node leader (node 5), amati node lain mendeteksi leader hilang dan memicu election baru. Catat leader baru yang terpilih (harusnya node 4).
 3. Simpan log terminal (screenshot atau `> log_nodeX.txt` redirect) dari kedua skenario ke folder `bukti/`.
 
+## Analisis Implementasi
+
+### 1. Leader pada Sistem FoodGo
+
+Membantu mengoordinasikan pemrosesan pesanan agar setiap node memiliki informasi yang sama mengenai pihak yang bertanggung jawab mengelola antrean pesanan pusat. Tanpa koordinasi, beberapa node dapat bertindak sebagai pengelola secara bersamaan sehingga berpotensi menimbulkan konflik pemrosesan atau duplikasi pesanan, ini juga berkaitan dengan perbedaan urutan waktu yang dicatat oleh beberapa server akibat jam yang tidak sinkron. Leader membantu menentukan satu node yang bertanggung jawab dalam koordinasi, tetapi tidak secara langsung menyelesaikan jam fisik yang tidak sinkron.
+
+### 2. Alasan Menggunakan Bully Algorithm dibandingkan Raft
+
+Karena mekanismenya relatif sederhana untuk disimulasikan menggunakan lima node virtual. Setiap node memiliki ID, dan node dengan ID tertinggi yang masih aktif berpeluang menjadi leader. Ketika sebuah node memulai election, node tersebut mengirim pesan `ELECTION` kepada node dengan ID lebih tinggi. Jika menerima pesan `OK`, node menunggu pengumuman leader. Jika tidak ada respons dari node yang lebih tinggi, node dapat menyatakan dirinya sebagai leader dan mengirim pesan `COORDINATOR` kepada node lainnya. Dibandingkan dengan Raft, Bully Algorithm lebih mudah dipahami untuk mempelajari proses pemilihan leader berdasarkan prioritas ID. Sementara itu, Raft menggunakan mekanisme pemilihan leader berbasis term dan pertukaran pesan antarnode, dan memiliki mekanisme replikasi log untuk menjaga konsistensi sistem, di sini menggunakan Bully Algorithm agar proses election dan pergantian leader dapat diamati dengan lebih sederhana. Tetapi Bully Algorithm memiliki keterbatasan karena bergantung pada komunikasi antarnode dan penentuan apakah sebuah node masih aktif. Algoritma ini juga tidak menyediakan mekanisme replikasi log seperti Raft, sehingga pemilihan leader saja belum cukup untuk menjamin konsistensi seluruh data pesanan dalam sistem terdistribusi.
+
+### 3. Analisis Skenario Pengujian
+
+#### Skenario 1: Start Normal
+
+Pada skenario ini, lima node dijalankan hampir bersamaan. Setiap node memulai proses election dan mengirim pesan `ELECTION` kepada node yang memiliki ID lebih tinggi. Node dengan ID lebih tinggi akan merespons menggunakan pesan `OK` dan melanjutkan proses election jika diperlukan.
+
+Berdasarkan hasil pengujian yang dicatat dalam `JURNAL.md`, node 5 terpilih sebagai leader karena memiliki ID tertinggi di antara lima node. Node 5 kemudian mengirim pesan `COORDINATOR` kepada node lainnya, sehingga node 1 sampai 4 mengetahui bahwa node 5 merupakan leader saat ini.
+
+Hasil tersebut sesuai dengan mekanisme Bully Algorithm, yaitu node aktif dengan ID tertinggi menjadi leader setelah proses election selesai.
+
+#### Skenario 2: Leader Dimatikan
+
+Pada skenario ini, proses node 5 dihentikan menggunakan `Ctrl+C`. Node lain yang sebelumnya mengetahui node 5 sebagai leader akan memeriksa responsnya melalui pesan `PING`. Ketika node 5 tidak merespons, node yang mendeteksi kegagalan akan memulai election baru.
+
+Berdasarkan hasil yang dicatat dalam `JURNAL.md`, node 4 terpilih sebagai leader baru setelah node 5 dimatikan. Node 4 kemudian mengirim pesan `COORDINATOR` kepada node 1, 2, dan 3 untuk mengumumkan perubahan leader.
+
+Pergantian ini menunjukkan bahwa sistem dapat melakukan pemilihan leader kembali ketika leader sebelumnya tidak tersedia. Berdasarkan konfigurasi program, pemeriksaan leader dilakukan setiap tiga detik dan waktu tunggu respons election adalah dua detik. Waktu aktual pemilihan leader tetap bergantung pada waktu deteksi kegagalan dan respons komunikasi antarnode.
+
+Kedua skenario menunjukkan bahwa Bully Algorithm dapat digunakan untuk mensimulasikan pemilihan leader awal dan pergantian leader ketika terjadi kegagalan pada node yang sedang memimpin.
+
+
 ## Struktur Submission
 
 ```
