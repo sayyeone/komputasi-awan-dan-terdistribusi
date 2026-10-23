@@ -2,7 +2,7 @@
 
 ## Implementasi Bully 
 - Kendala saat mengisi TODO 1-4: Sempat ada kesalahan kode pada node 5 sehingga program error. Kesalahan tersebut sudah diperbaiki dan seluruh node kemudian berjalan normal.
-- Lama waktu sampai leader baru terdeteksi: Sekitar 10 detik setelah node 5 dinonaktifkan, node 4 terdeteksi menjadi leader baru. Waktu ini dipengaruhi batas waktu 5 detik yang dipakai untuk menunggu respons dalam menentukan leader.
+- Lama waktu sampai leader baru terdeteksi: Berdasarkan kode, node mengecek leader setiap 3 detik dan menunggu balasan OK selama 2 detik sebelum menyatakan diri sebagai leader, sehingga leader baru (node 4) terpilih dalam kisaran 2 sampai 5 detik setelah node 5 dimatikan.
 
 ## Skenario 1: Start normal 
 - Leader yang terpilih: Node 5
