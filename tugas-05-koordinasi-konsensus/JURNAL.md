@@ -3,13 +3,13 @@
 ## Implementasi Bully
 - Kendala saat mengisi TODO 1-4: ...
 
-## Skenario 1: Start normal
-- Leader yang terpilih: ...
-- Log/observasi: ...
+## Skenario 1: Start normal (Yolanda Elva Angelica - 103072400125)
+- Leader yang terpilih: Node 5
+- Log/observasi: Node 1 sampai 4 mengirim ELECTION ke node ber-ID lebih tinggi dan menerima OK. Node 5 tidak punya node ber-ID lebih tinggi, jadi langsung menjadi LEADER dan mengirim COORDINATOR ke node 1 sampai 4. Semua node mencatat “Leader sekarang: node 5”.
 
-## Skenario 2: Leader dimatikan
-- Leader baru yang terpilih: ...
-- Berapa lama waktu sampai leader baru terdeteksi: ...
+## Skenario 2: Leader dimatikan (Yolanda Elva Angelica - 103072400125)
+- Leader baru yang terpilih: Node 4
+- Berapa lama waktu sampai leader baru terdeteksi: Node 5 dimatikan dengan Ctrl+C. Node 1 sampai 4 mendeteksi bahwa leader node 5 tidak merespons, lalu memulai election ulang. Node 4 menjadi LEADER dan mengirim COORDINATOR ke node 1, 2, dan 3.
 
 ## Log Penggunaan AI (Level 2)
 
