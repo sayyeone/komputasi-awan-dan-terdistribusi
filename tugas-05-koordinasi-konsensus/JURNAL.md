@@ -1,7 +1,8 @@
 # Jurnal Proses — Tugas 5
 
-## Implementasi Bully
-- Kendala saat mengisi TODO 1-4: ...
+## Implementasi Bully (Yolanda Elva Angelica - 103072400125)
+- Kendala saat mengisi TODO 1-4: Sempat ada kesalahan kode pada node 5 sehingga program error. Kesalahan tersebut sudah diperbaiki dan seluruh node kemudian berjalan normal.
+- Lama waktu sampai leader baru terdeteksi: Sekitar 10 detik setelah node 5 dinonaktifkan, node 4 terdeteksi menjadi leader baru. Waktu ini dipengaruhi batas waktu 5 detik yang dipakai untuk menunggu respons dalam menentukan leader.
 
 ## Skenario 1: Start normal (Yolanda Elva Angelica - 103072400125)
 - Leader yang terpilih: Node 5
