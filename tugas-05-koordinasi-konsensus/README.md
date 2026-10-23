@@ -46,6 +46,43 @@ Membantu mengoordinasikan pemrosesan pesanan agar setiap node memiliki informasi
 
 Karena mekanismenya relatif sederhana untuk disimulasikan menggunakan lima node virtual. Setiap node memiliki ID, dan node dengan ID tertinggi yang masih aktif berpeluang menjadi leader. Ketika sebuah node memulai election, node tersebut mengirim pesan `ELECTION` kepada node dengan ID lebih tinggi. Jika menerima pesan `OK`, node menunggu pengumuman leader. Jika tidak ada respons dari node yang lebih tinggi, node dapat menyatakan dirinya sebagai leader dan mengirim pesan `COORDINATOR` kepada node lainnya. Dibandingkan dengan Raft, Bully Algorithm lebih mudah dipahami untuk mempelajari proses pemilihan leader berdasarkan prioritas ID. Sementara itu, Raft menggunakan mekanisme pemilihan leader berbasis term dan pertukaran pesan antarnode, dan memiliki mekanisme replikasi log untuk menjaga konsistensi sistem, di sini menggunakan Bully Algorithm agar proses election dan pergantian leader dapat diamati dengan lebih sederhana. Tetapi Bully Algorithm memiliki keterbatasan karena bergantung pada komunikasi antarnode dan penentuan apakah sebuah node masih aktif. Algoritma ini juga tidak menyediakan mekanisme replikasi log seperti Raft, sehingga pemilihan leader saja belum cukup untuk menjamin konsistensi seluruh data pesanan dalam sistem terdistribusi.
 
+#### 2.1 Mengapa Bully Algorithm Selalu Memilih ID Tertinggi?
+ 
+Pemilihan ID tertinggi bukan hasil pengacakan, melainkan konsekuensi langsung dari aturan pengiriman pesan:
+ 
+- Node yang memulai election hanya mengirim `ELECTION` kepada node ber-ID **lebih besar** dari dirinya.
+- Node ber-ID lebih besar yang masih aktif membalas `OK`, sehingga pengirim berhenti mencalonkan diri. Node yang membalas tersebut kemudian memulai election sendiri ke node di atasnya.
+- Proses ini berulang naik ke ID yang lebih tinggi sampai ada node yang tidak mendapat `OK` dari siapa pun dalam batas waktu `ELECTION_TIMEOUT`. Node itu pasti node aktif dengan ID tertinggi, lalu mengumumkan diri melalui `COORDINATOR`.
+Contohnya, node 2 tidak akan menjadi leader selama node 3, 4, atau 5 masih aktif karena node 2 akan menerima `OK` dari salah satunya dan berhenti. Jika node 5 mati, node 4 tidak lagi menerima `OK` dari ID yang lebih tinggi sehingga node 4 menjadi leader. Aturan ini berasal dari prioritas ID, bukan dari kapasitas komputasi node.
+ 
+#### 2.2 Kelebihan Bully Algorithm
+ 
+- **Sederhana** — hanya tiga jenis pesan (`ELECTION`, `OK`, `COORDINATOR`), sehingga mudah diimplementasikan dan diamati.
+- **Deterministik** — hasil election dapat diprediksi: node aktif dengan ID tertinggi selalu menang.
+- **Pemulihan otomatis** — ketika leader mati, node lain dapat memulai election ulang tanpa campur tangan manual.
+- **Mudah diuji** — skenario seperti start normal dan leader dimatikan dapat dilihat langsung pada log.
+#### 2.3 Kekurangan Bully Algorithm
+ 
+1. **Jumlah pesan dapat mencapai $O(n^2)$.** Pada kondisi terburuk, node ber-ID rendah memulai election saat seluruh node aktif. Setiap node mengirim `ELECTION` ke semua node di atasnya, dan penerima juga memulai election sendiri. Dengan $n$ sebagai jumlah node, total pesan dalam satu proses election dapat mencapai orde $n^2$. Jumlah aktual bergantung pada kondisi jaringan, waktu respons, dan apakah beberapa election berjalan bersamaan.
+2. **Ada jeda tanpa leader (SPOF sementara).** Selama leader mati dan leader baru belum terpilih, operasi yang membutuhkan koordinasi leader dapat tertunda. Pada implementasi ini, `monitor_leader()` memeriksa leader dengan `PING` setiap 3 detik, lalu `ELECTION_TIMEOUT` menunggu respons selama 2 detik. Jadi kegagalan tidak langsung terdeteksi, dan jeda total sekitar 3 detik interval `PING` ditambah 2 detik *timeout*. Node lain tetap berjalan, tetapi operasi yang bergantung pada leader harus menunggu.
+3. **Rentan split-brain saat partisi jaringan.** Bully Algorithm mengasumsikan node yang tidak merespons berarti mati. Jika jaringan terpecah, kedua sisi partisi dapat saling menganggap node di sisi lain mati, lalu masing-masing memilih leader sendiri. Akibatnya, dua leader dapat aktif bersamaan dan mengelola antrean pesanan secara terpisah.
+4. **Tidak mempertimbangkan kondisi node.** Pemilihan hanya berdasarkan ID, bukan CPU, beban kerja, latensi jaringan, atau kesehatan layanan, sehingga leader terpilih belum tentu kandidat paling optimal.
+5. **Tidak ada replikasi log.** Bully hanya menentukan siapa leader. Tidak ada kesepakatan mayoritas atau replikasi data, sehingga pemilihan leader saja belum menjamin konsistensi seluruh data pesanan.
+#### 2.4 Perbandingan Bully Algorithm dan Raft
+ 
+| Aspek | Bully Algorithm | Raft |
+|---|---|---|
+| Dasar pemilihan leader | Node aktif dengan ID tertinggi | Kandidat yang memperoleh dukungan mayoritas |
+| Mekanisme election | `ELECTION` → `OK` → `COORDINATOR` | *Term*, permintaan suara (*request vote*), dan voting |
+| Jumlah pesan | Dapat mencapai $O(n^2)$ pada kondisi terburuk | Bergantung pada jumlah node, jaringan, dan jumlah percobaan; tidak selalu lebih sedikit |
+| Penanganan kegagalan leader | Node yang mendeteksi kegagalan memulai election ulang | Node memulai election ketika leader dianggap tidak tersedia |
+| Partisi jaringan | Rentan split-brain (dua leader dapat muncul) | Hanya partisi yang memegang mayoritas yang dapat memilih leader |
+| Konsistensi data | Tidak menjamin konsistensi data | Replikasi log dengan aturan mayoritas |
+| Jeda tanpa leader | Ada jeda selama deteksi dan election | Ada jeda selama election; bergantung pada mayoritas yang tersedia |
+| Kompleksitas implementasi | Relatif sederhana | Lebih kompleks (term, voting, log, aturan konsistensi) |
+ 
+Raft tidak menghilangkan kebutuhan akan leader. Ketika leader gagal, election baru tetap diperlukan. Perbedaan utamanya terletak pada jaminan konsensus dan konsistensi data, bukan pada jumlah pesan semata. Untuk FoodGo skala kecil, Bully cukup untuk mempelajari dasar pemilihan leader. Jika FoodGo membutuhkan konsistensi antrean dan replikasi data yang lebih kuat, Raft lebih relevan untuk dipertimbangkan.
+
 ### 3. Analisis Skenario Pengujian
 
 #### Skenario 1: Start Normal
