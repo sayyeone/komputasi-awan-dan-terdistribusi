@@ -1,4 +1,4 @@
-# Tugas 5 (Pekan 5) — Koordinasi & Konsensus
+# Tugas 5 (Pekan 5) Koordinasi & Konsensus
 
 **Materi terkait:** Physical/Logical Clock, Election Algorithm (Bully/Raft).
 
@@ -10,7 +10,7 @@ Terjadi konflik urutan waktu pada pesanan FoodGo (dua server mencatat urutan pes
 
 Implementasikan simulasi **Bully Algorithm** untuk memilih leader di antara **5 node virtual** yang berjalan sebagai 5 proses Python terpisah di laptop yang sama (tiap node = satu proses di port berbeda, komunikasi lewat TCP socket di `localhost`).
 
-Skeleton yang disediakan (`src/node.py`) sudah menangani bagian **infrastruktur jaringan** (membuka socket, menerima & mengirim pesan antar node) — bagian **algoritma Bully sendiri sengaja dikosongkan** (`# TODO`), karena itu inti pembelajaran tugas ini.
+Skeleton yang disediakan (`src/node.py`) sudah menangani bagian **infrastruktur jaringan** (membuka socket, menerima & mengirim pesan antar node) bagian **algoritma Bully sendiri sengaja dikosongkan** (`# TODO`), karena itu inti pembelajaran tugas ini.
 
 ### Aturan Bully Algorithm yang harus diimplementasikan
 
@@ -57,10 +57,10 @@ Contohnya, node 2 tidak akan menjadi leader selama node 3, 4, atau 5 masih aktif
  
 #### 2.2 Kelebihan Bully Algorithm
  
-- **Sederhana** — hanya tiga jenis pesan (`ELECTION`, `OK`, `COORDINATOR`), sehingga mudah diimplementasikan dan diamati.
-- **Deterministik** — hasil election dapat diprediksi: node aktif dengan ID tertinggi selalu menang.
-- **Pemulihan otomatis** — ketika leader mati, node lain dapat memulai election ulang tanpa campur tangan manual.
-- **Mudah diuji** — skenario seperti start normal dan leader dimatikan dapat dilihat langsung pada log.
+- **Sederhana** hanya tiga jenis pesan (`ELECTION`, `OK`, `COORDINATOR`), sehingga mudah diimplementasikan dan diamati.
+- **Deterministik** hasil election dapat diprediksi: node aktif dengan ID tertinggi selalu menang.
+- **Pemulihan otomatis** ketika leader mati, node lain dapat memulai election ulang tanpa campur tangan manual.
+- **Mudah diuji** skenario seperti start normal dan leader dimatikan dapat dilihat langsung pada log.
 #### 2.3 Kekurangan Bully Algorithm
  
 1. **Jumlah pesan dapat mencapai $O(n^2)$.** Pada kondisi terburuk, node ber-ID rendah memulai election saat seluruh node aktif. Setiap node mengirim `ELECTION` ke semua node di atasnya, dan penerima juga memulai election sendiri. Dengan $n$ sebagai jumlah node, total pesan dalam satu proses election dapat mencapai orde $n^2$. Jumlah aktual bergantung pada kondisi jaringan, waktu respons, dan apakah beberapa election berjalan bersamaan.
@@ -126,6 +126,6 @@ tugas-05-koordinasi-konsensus/
 
 ## Batasan Penggunaan AI (Level 2)
 
-Kebijakan **Level 2 (AI Assisted Idea Generation & Structuring)** berlaku — lihat [`../RUBRIK-UMUM.md`](../RUBRIK-UMUM.md). Boleh bertanya ke AI tentang gambaran umum algoritma election; **tidak boleh** meminta AI menuliskan isi `# TODO` di `src/node.py` (logika `on_message`, `start_election`, `declare_leader`, `monitor_leader`). Catat pemakaian AI di "Log Penggunaan AI" pada `JURNAL.md`.
+Kebijakan **Level 2 (AI Assisted Idea Generation & Structuring)** berlaku lihat [`../RUBRIK-UMUM.md`](../RUBRIK-UMUM.md). Boleh bertanya ke AI tentang gambaran umum algoritma election; **tidak boleh** meminta AI menuliskan isi `# TODO` di `src/node.py` (logika `on_message`, `start_election`, `declare_leader`, `monitor_leader`). Catat pemakaian AI di "Log Penggunaan AI" pada `JURNAL.md`.
 
-- `README.md` wajib menjelaskan kenapa Bully Algorithm selalu memilih node ber-ID tertinggi yang masih hidup, dan apa kelemahannya dibanding algoritma lain (mis. jumlah pesan yang dikirim saat election, single point of failure sebelum leader baru terpilih) — bukan sekadar definisi generik.
+- `README.md` wajib menjelaskan kenapa Bully Algorithm selalu memilih node ber-ID tertinggi yang masih hidup, dan apa kelemahannya dibanding algoritma lain (mis. jumlah pesan yang dikirim saat election, single point of failure sebelum leader baru terpilih) bukan sekadar definisi generik.
