@@ -143,6 +143,93 @@ Mapping disimpan dalam dictionary bersama sesuai skeleton. Perpindahan tanggung 
 #### Kesimpulan
 Simulasi berhasil menjalankan lookup serta menunjukkan perubahan tanggung jawab mapping ketika node bergabung dan keluar. Pada pengujian ini, mapping kurir yang tidak terdampak perubahan topologi tetap dapat ditemukan.
 
+## Mekanisme Kerja Chord DHT
+
+### 1. Consistent Hashing
+
+Simulasi Chord menggunakan algoritma SHA-1 untuk menghasilkan nilai hash dari ID node dan ID kurir. Hasil hashing dibatasi ke dalam ruang identifier 0–255 menggunakan modulo 256 (`M_BITS = 8`).
+
+Dengan consistent hashing, ID node dan ID kurir berada dalam ruang identifier yang sama. Nilai hash tersebut digunakan untuk menentukan node yang bertanggung jawab atas mapping alamat IP kurir.
+
+**Hasil hashing node dan kurir:**
+
+| Jenis | Identitas | Hash |
+|---|---|---:|
+| Node | node-bandung-1 | 40 |
+| Node | node-jakarta-2 | 102 |
+| Node | node-surabaya-1 | 136 |
+| Node | node-jakarta-1 | 177 |
+| Kurir | kurir-002 | 28 |
+| Kurir | kurir-001 | 50 |
+| Kurir | kurir-012 | 116 |
+| Kurir | kurir-003 | 132 |
+| Kurir | kurir-005 | 175 |
+
+### 2. Ring Topology dan Successor
+
+Node disusun berdasarkan nilai hash dari terkecil hingga terbesar dan membentuk struktur melingkar (*ring topology*).
+
+Urutan node pada kondisi awal:
+
+`40 → 102 → 136 → 177 → kembali ke 40`
+
+Dalam Chord, successor merupakan node pertama yang memiliki nilai hash lebih besar atau sama dengan hash key yang dicari. Apabila tidak ditemukan node yang memenuhi kondisi tersebut, pencarian kembali ke node dengan hash terkecil. Mekanisme ini disebut *wrap-around*.
+
+### 3. Mekanisme Lookup
+
+Fungsi `lookup(kurir_id)` digunakan untuk menemukan alamat IP kurir berdasarkan ID kurir. Proses pencariannya meliputi:
+1. Mengubah ID kurir menjadi nilai hash menggunakan `hash_id()`.
+2. Memanggil `find_successor()` untuk menentukan node penanggung jawab.
+3. Mencari mapping kurir berdasarkan hash pada dictionary `self.data`.
+4. Mengembalikan alamat IP apabila mapping ditemukan dan ID kurir sesuai.
+
+**Penelusuran manual lookup `kurir-001`:**
+
+| Langkah | Proses | Hasil |
+|---|---|---|
+| 1 | Menghitung hash ID kurir | 50 |
+| 2 | Memeriksa node 40 | 40 < 50, bukan successor |
+| 3 | Memeriksa node 102 | 102 >= 50, memenuhi aturan successor |
+| 4 | Menentukan node penanggung jawab | Node 102 |
+| 5 | Mengambil alamat IP kurir | 192.168.1.10 |
+
+Berdasarkan penelusuran tersebut, successor dari `kurir-001` adalah node 102. Mapping kurir tersebut menghasilkan alamat IP `192.168.1.10`.
+
+### 4. Perubahan Mapping Ketika Node Bergabung (Join)
+
+Pada simulasi, node baru bernama `node-medan-1` bergabung dengan nilai hash 123.
+
+Sebelum node baru bergabung, `kurir-012` dengan hash 116 ditangani oleh node 136. Setelah node 123 ditambahkan, successor untuk kurir tersebut berubah menjadi node 123.
+
+**Perubahan mapping:**
+
+| Kurir | Hash | Sebelum Join | Setelah Join |
+|---|---:|---:|---:|
+| kurir-012 | 116 | Node 136 | Node 123 |
+
+Bukti output program:
+
+```text
+[JOIN] kurir-012 (hash=116): node 136 -> node 123
+```
+### 5. Perubahan Mapping Ketika Node Keluar (Leave)
+
+Pada simulasi, node `node-jakarta-1` dengan nilai hash 177 keluar dari ring.
+
+Sebelum node tersebut keluar, `kurir-005` dengan hash 175 ditangani oleh node 177. Setelah node 177 dihapus, tidak ada node dengan hash yang lebih besar atau sama dengan 175. Oleh karena itu, sesuai aturan wrap-around, tanggung jawab mapping berpindah ke node dengan hash terkecil, yaitu node 40.
+
+**Perubahan mapping:**
+
+| Kurir | Hash | Sebelum Leave | Setelah Leave |
+|---|---:|---|---|
+| kurir-005 | 175 | Node 177 | Node 40 |
+
+Bukti output program:
+
+```text
+[LEAVE] kurir-005 (hash=175): node 177 -> node 40
+```
+Pada simulasi ini, perubahan join dan leave menunjukkan perpindahan tanggung jawab mapping berdasarkan aturan successor. Karena seluruh data masih disimpan dalam satu dictionary (self.data), perpindahan tersebut belum merupakan transfer data secara fisik antar-node seperti pada implementasi Chord di lingkungan terdistribusi.
 
 ## Struktur Submission
 
