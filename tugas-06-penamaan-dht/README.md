@@ -30,6 +30,32 @@ python3 src/chord_simulation.py
 2. Gambarkan (boleh pakai Mermaid, lihat Tugas 2) ring topology dari simulasi kalian, tandai node mana yang bertanggung jawab atas ID Kurir mana.
 3. Jelaskan apa yang terjadi pada mapping saat sebuah node **keluar** dari ring (siapa yang mengambil alih tanggung jawabnya) — dukung dengan output program.
 
+## Implementasi dan Hasil Pengujian Simulasi Chord DHT
+#### Implementasi
+Simulasi Chord DHT dibuat menggunakan Python dalam satu proses tanpa jaringan sungguhan. ID node dan ID kurir di-hash menggunakan SHA-1 ke ruang identifier 0–255.
+
+Fungsi yang diimplementasikan:
+
+- `find_successor()`: menentukan node penanggung jawab berdasarkan hash key, termasuk wrap-around.
+- `register_kurir()`: menyimpan mapping ID kurir ke alamat IP.
+- `lookup()`: mencari dan mengembalikan alamat IP kurir.
+- `join()`: menambahkan node dan menampilkan perubahan tanggung jawab mapping.
+- `leave()`: menghapus node dan mengalihkan tanggung jawab mapping ke successor berikutnya.
+
+Mapping disimpan dalam dictionary bersama sesuai skeleton. Perpindahan tanggung jawab ditunjukkan melalui log program.
+
+#### Hasil pengujian
+| Pengujian | Hasil |
+|---|---|
+| Lookup awal | `kurir-001` mengembalikan IP `192.168.1.10` melalui node `102`, sedangkan `kurir-002` mengembalikan IP `192.168.1.11` melalui node `40`. |
+| Join | Node Medan dengan ID `123` bergabung. Tanggung jawab `kurir-012` dengan hash `116` berpindah dari node `136` ke node `123`. |
+| Leave | Node Jakarta dengan ID `177` keluar. Tanggung jawab `kurir-005` dengan hash `175` berpindah ke node `40` melalui wrap-around. |
+| Lookup setelah perubahan topologi | `kurir-001` dan `kurir-002` tetap mengembalikan alamat IP yang sesuai. |
+
+#### Kesimpulan
+Simulasi berhasil menjalankan lookup serta menunjukkan perubahan tanggung jawab mapping ketika node bergabung dan keluar. Pada pengujian ini, mapping kurir yang tidak terdampak perubahan topologi tetap dapat ditemukan.
+
+
 ## Struktur Submission
 
 ```
