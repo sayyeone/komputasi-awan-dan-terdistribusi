@@ -27,6 +27,29 @@ python3 src/chord_simulation.py
 ## Tugas Analisis (`README.md`)
 
 1. Jelaskan **kenapa DHT/Chord** lebih cocok untuk kasus ini dibanding **flat naming sederhana** (mis. tabel pusat ID→IP) atau **DNS konvensional** — kaitkan dengan sifat "IP kurir sering berubah" dan kebutuhan tanpa titik gagal tunggal.
+**Konteks.** IP server kurir sering berubah, sedangkan ID Kurir tetap. FoodGo membutuhkan pemetaan ID Kurir → IP terkini tanpa server pusat yang menjadi bottleneck atau single point of failure (SPOF).
+
+**Flat naming (tabel pusat ID→IP).** Semua lookup dan update bergantung pada satu server. Karena IP kurir sering berubah, update menumpuk di server itu (bottleneck), dan jika server mati, seluruh pencarian kurir gagal (SPOF).
+
+**DNS konvensional.** Bersifat hierarkis dan dirancang untuk nama yang relatif stabil. Caching dan TTL membuat perubahan IP tidak langsung terlihat, sehingga IP kurir bisa usang. Menurunkan TTL memperberat server authoritative, dan titik hierarki (root/TLD) tetap menjadi titik ketergantungan.
+
+**DHT/Chord.** ID Kurir dan ID Node di-hash ke ruang yang sama dan node tersusun melingkar. Mapping disimpan di *successor* dari hash ID Kurir.
+- Saat IP kurir berubah, cukup perbarui entri di satu node penanggung jawab. ID Kurir tetap sehingga lookup selalu mengarah ke node yang sama.
+- Tidak ada server pusat, jadi tidak ada SPOF. Jika satu node keluar, hanya key miliknya yang berpindah ke successor-nya.
+- Consistent hashing menyebar key dan beban query ke banyak node, sehingga tidak ada bottleneck.
+
+**Perbandingan ringkas.**
+
+| Aspek | Flat Naming | DNS Konvensional | DHT/Chord |
+|---|---|---|---|
+| Struktur | Satu tabel/server pusat | Hierarkis | Terdistribusi (ring) |
+| SPOF | Ya | Sebagian | Tidak ada |
+| Bottleneck | Tinggi | Sedang | Rendah |
+| Cocok untuk IP sering berubah | Kurang (beban menumpuk) | Kurang (TTL/caching) | Baik |
+
+**Dukungan dari hasil simulasi.** Pada simulasi dengan 4 node (id 40, 102, 136, 177), setiap Courier ID dipetakan ke successor-nya, misalnya kurir-001 (hash=50) ditangani node 102 dan kurir-002 (hash=28) ditangani node 40. Tidak ada server pusat yang menyimpan seluruh tabel. Saat node-medan-1 (id=123) bergabung, hanya kurir-012 (hash=116) yang berpindah dari node 136 ke node 123. Saat node-jakarta-1 (id=177) keluar, hanya kurir-005 (hash=175) yang berpindah ke node 40. Lookup kurir-001 dan kurir-002 tetap mengarah ke node dan IP yang sama sebelum dan sesudah perubahan topologi. Ini menunjukkan bahwa perubahan node hanya memengaruhi sebagian kecil mapping dan sistem tetap berjalan tanpa titik gagal tunggal.
+
+**Kesimpulan.** Chord paling sesuai untuk FoodGo karena menangani identitas tetap dengan lokasi dinamis, tanpa bottleneck dan SPOF.
 2. Gambarkan (boleh pakai Mermaid, lihat Tugas 2) ring topology dari simulasi kalian, tandai node mana yang bertanggung jawab atas ID Kurir mana.
 3. Jelaskan apa yang terjadi pada mapping saat sebuah node **keluar** dari ring (siapa yang mengambil alih tanggung jawabnya) — dukung dengan output program.
 
