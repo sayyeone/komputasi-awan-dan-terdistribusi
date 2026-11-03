@@ -50,8 +50,9 @@ python3 src/chord_simulation.py
 **Dukungan dari hasil simulasi.** Pada simulasi dengan 4 node (id 40, 102, 136, 177), setiap Courier ID dipetakan ke successor-nya, misalnya kurir-001 (hash=50) ditangani node 102 dan kurir-002 (hash=28) ditangani node 40. Tidak ada server pusat yang menyimpan seluruh tabel. Saat node-medan-1 (id=123) bergabung, hanya kurir-012 (hash=116) yang berpindah dari node 136 ke node 123. Saat node-jakarta-1 (id=177) keluar, hanya kurir-005 (hash=175) yang berpindah ke node 40. Lookup kurir-001 dan kurir-002 tetap mengarah ke node dan IP yang sama sebelum dan sesudah perubahan topologi. Ini menunjukkan bahwa perubahan node hanya memengaruhi sebagian kecil mapping dan sistem tetap berjalan tanpa titik gagal tunggal.
 
 **Kesimpulan.** Chord paling sesuai untuk FoodGo karena menangani identitas tetap dengan lokasi dinamis, tanpa bottleneck dan SPOF.
+
 2. Gambarkan (boleh pakai Mermaid, lihat Tugas 2) ring topology dari simulasi kalian, tandai node mana yang bertanggung jawab atas ID Kurir mana.
-3. Jelaskan apa yang terjadi pada mapping saat sebuah node **keluar** dari ring (siapa yang mengambil alih tanggung jawabnya) — dukung dengan output program.
+3. Jelaskan apa yang terjadi pada mapping saat sebuah node **keluar** dari ring (siapa yang mengambil alih tanggung jawabnya) — dukung dengan output program
 
 ## Implementasi dan Hasil Pengujian Simulasi Chord DHT
 #### Implementasi
