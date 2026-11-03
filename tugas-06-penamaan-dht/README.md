@@ -52,6 +52,70 @@ python3 src/chord_simulation.py
 **Kesimpulan.** Chord paling sesuai untuk FoodGo karena menangani identitas tetap dengan lokasi dinamis, tanpa bottleneck dan SPOF.
 
 2. Gambarkan (boleh pakai Mermaid, lihat Tugas 2) ring topology dari simulasi kalian, tandai node mana yang bertanggung jawab atas ID Kurir mana.
+
+## Diagram Topologi Ring Chord
+ 
+Panah solid = successor antar node. Panah putus-putus = pemetaan kurir ke node penanggung jawab. Panah tebal = mapping yang berpindah. Node ber-hash terbesar menunjuk kembali ke node terkecil (wrap-around).
+ 
+### 1. Kondisi Awal (4 node)
+ 
+```mermaid
+flowchart LR
+    N40(("Node 40<br/>bandung-1")) --> N102(("Node 102<br/>jakarta-2"))
+    N102 --> N136(("Node 136<br/>surabaya-1"))
+    N136 --> N177(("Node 177<br/>jakarta-1"))
+    N177 --> N40
+ 
+    K2["kurir-002<br/>hash 28"] -.-> N40
+    K1["kurir-001<br/>hash 50"] -.-> N102
+    K12["kurir-012<br/>hash 116"] -.-> N136
+    K3["kurir-003<br/>hash 132"] -.-> N136
+    K5["kurir-005<br/>hash 175"] -.-> N177
+```
+ 
+### 2. Setelah Node medan-1 (ID 123) Join
+ 
+```mermaid
+flowchart LR
+    N40(("Node 40<br/>bandung-1")) --> N102(("Node 102<br/>jakarta-2"))
+    N102 --> N123(("Node 123<br/>medan-1 (baru)"))
+    N123 --> N136(("Node 136<br/>surabaya-1"))
+    N136 --> N177(("Node 177<br/>jakarta-1"))
+    N177 --> N40
+ 
+    K2["kurir-002<br/>hash 28"] -.-> N40
+    K1["kurir-001<br/>hash 50"] -.-> N102
+    K12["kurir-012<br/>hash 116"] ==>|"pindah dari 136"| N123
+    K3["kurir-003<br/>hash 132"] -.-> N136
+    K5["kurir-005<br/>hash 175"] -.-> N177
+```
+ 
+### 3. Setelah Node jakarta-1 (ID 177) Leave
+ 
+```mermaid
+flowchart LR
+    N40(("Node 40<br/>bandung-1")) --> N102(("Node 102<br/>jakarta-2"))
+    N102 --> N123(("Node 123<br/>medan-1"))
+    N123 --> N136(("Node 136<br/>surabaya-1"))
+    N136 --> N40
+ 
+    K2["kurir-002<br/>hash 28"] -.-> N40
+    K1["kurir-001<br/>hash 50"] -.-> N102
+    K12["kurir-012<br/>hash 116"] -.-> N123
+    K3["kurir-003<br/>hash 132"] -.-> N136
+    K5["kurir-005<br/>hash 175"] ==>|"pindah dari 177, wrap-around"| N40
+```
+ 
+### Ringkasan Pemetaan
+ 
+| Kurir | Hash | Awal | Setelah Join | Setelah Leave |
+|---|---|---|---|---|
+| kurir-002 | 28 | Node 40 | Node 40 | Node 40 |
+| kurir-001 | 50 | Node 102 | Node 102 | Node 102 |
+| kurir-012 | 116 | Node 136 | **Node 123** | Node 123 |
+| kurir-003 | 132 | Node 136 | Node 136 | Node 136 |
+| kurir-005 | 175 | Node 177 | Node 177 | **Node 40** |
+
 3. Jelaskan apa yang terjadi pada mapping saat sebuah node **keluar** dari ring (siapa yang mengambil alih tanggung jawabnya) — dukung dengan output program
 
 ## Implementasi dan Hasil Pengujian Simulasi Chord DHT
