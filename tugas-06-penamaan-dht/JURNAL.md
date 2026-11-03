@@ -1,8 +1,8 @@
 # Jurnal Proses — Tugas 6
 
 ## Implementasi find_successor
-- Kesalahan pertama yang ditemui (mis. lupa wrap-around di ring): ...
-- Cara memperbaikinya: ...
+- Kesalahan pertama yang ditemui (mis. lupa wrap-around di ring):  tidak ditemukan kesalahan pada fungsi ini selama pengujian.
+- Cara memperbaikinya: tidak diperlukan perbaikan. Wrap-around berhasil diuji ketika node 177 keluar dan tanggung jawab kurir dengan hash 175 beralih ke node 40.
 
 ## Skenario join/leave
 - Hasil sebelum & sesudah node baru bergabung: Sebelum node baru bergabung, kurir-012 (hash=116) ditangani node 136. Setelah node-medan-1 (id=123) bergabung, kurir-012 berpindah ke node 123. Mapping kurir lain tidak berubah, misalnya kurir-001 tetap ditangani node 102 dan IP-nya tetap 192.168.1.10.
