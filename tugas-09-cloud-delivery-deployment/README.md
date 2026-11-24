@@ -40,6 +40,40 @@ Sistem Data Kependudukan memiliki beberapa karakteristik, yaitu:
 
 
 2. **Rekomendasikan Service Model** (IaaS / PaaS / SaaS) yang tepat untuk komponen-komponen berbeda dari sistem ini (boleh berbeda service model untuk komponen berbeda, mis. database inti vs portal publik untuk pengecekan status).
+
+## 2. Rekomendasi Service Model
+
+Berdasarkan deployment model yang dipilih, yaitu **Private Cloud**, Sistem Data Kependudukan menggunakan kombinasi service model IaaS dan PaaS, serta SaaS secara terbatas. Pemilihan ini disesuaikan dengan kebutuhan pengendalian data, pengelolaan aplikasi, dan akses oleh berbagai instansi.
+
+### 2.1 Pemetaan Service Model
+
+| Komponen Sistem | Service Model | Alasan Pemilihan |
+|---|---|---|
+| Infrastruktur server dan jaringan | **IaaS** | Memberikan kendali kepada pemerintah dalam mengelola server virtual, jaringan, sistem operasi, dan konfigurasi keamanan. |
+| Database kependudukan dan penyimpanan biometrik | **IaaS** | Memungkinkan pemerintah mengatur penyimpanan, konfigurasi database, enkripsi, dan keamanan data sensitif. |
+| Aplikasi pengelolaan data kependudukan | **PaaS** | Menyediakan platform untuk menjalankan dan mengembangkan aplikasi tanpa harus mengelola seluruh infrastruktur server secara langsung. |
+| API integrasi antarinstansi | **PaaS** | Memudahkan pengembangan dan pengelolaan API yang menghubungkan Dukcapil, kepolisian, dan bank dengan mekanisme autentikasi serta otorisasi. |
+| Dashboard monitoring dan administrasi | **PaaS** | Mendukung pemantauan penggunaan sistem, aktivitas akses, dan kondisi layanan. |
+| Aplikasi kolaborasi internal dan helpdesk | **SaaS** | Digunakan untuk kebutuhan pendukung yang tidak memproses atau menyimpan data kependudukan sensitif. |
+
+### 2.2 Alasan Pemilihan Service Model
+
+**1. Infrastructure as a Service (IaaS)**
+
+IaaS digunakan untuk menyediakan infrastruktur dasar, seperti server virtual, jaringan, dan penyimpanan data. Model ini dipilih untuk komponen yang membutuhkan kendali tinggi, khususnya database kependudukan dan data biometrik. Pemerintah dapat mengatur sistem operasi, konfigurasi keamanan, serta mekanisme penyimpanan sesuai kebijakan yang berlaku.
+
+**2. Platform as a Service (PaaS)**
+
+PaaS digunakan untuk menjalankan aplikasi kependudukan, API integrasi, dan dashboard administrasi. Model ini memungkinkan tim pengembang berfokus pada pengembangan aplikasi tanpa harus mengelola seluruh infrastruktur dasar. PaaS juga mendukung pengembangan layanan yang dapat disesuaikan dengan kebutuhan akses berbagai instansi.
+
+**3. Software as a Service (SaaS)**
+
+SaaS digunakan secara terbatas untuk layanan pendukung, seperti aplikasi kolaborasi internal dan pengelolaan tiket bantuan teknis. Model ini tidak direkomendasikan untuk sistem inti yang mengolah data kependudukan karena pemerintah membutuhkan kendali tinggi terhadap pengolahan dan penyimpanan data sensitif.
+
+### 2.3 Kesimpulan
+
+Kombinasi IaaS dan PaaS menjadi pilihan utama karena memberikan kendali terhadap infrastruktur dan data sensitif sekaligus mempermudah pengembangan serta pengelolaan aplikasi. Sementara itu, SaaS dapat dimanfaatkan secara terbatas untuk layanan pendukung yang tidak berkaitan langsung dengan data kependudukan. Seluruh layanan tetap harus ditempatkan dalam lingkungan Private Cloud yang berada di bawah kendali pemerintah.
+
 3. Jelaskan **minimal 2 risiko spesifik** dari pilihan kalian dan mitigasinya (mis. jika Hybrid Cloud dipilih: risiko sinkronisasi data antara private & public segment).
 4. Bandingkan singkat dengan **satu alternatif yang kalian tolak** — kenapa alternatif itu kurang tepat (mis. kenapa Public Cloud murni ditolak, atau kenapa Private Cloud murni dianggap kurang skalabel).
 
