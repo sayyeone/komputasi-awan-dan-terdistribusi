@@ -14,6 +14,31 @@ Pemerintah ingin membangun **Sistem Data Kependudukan** (nama, NIK, alamat, data
 ## Tugas Kelompok
 
 1. **Rekomendasikan Deployment Model** (Public / Private / Hybrid / Community Cloud) yang paling tepat untuk sistem ini. Jelaskan alasannya berdasarkan **karakteristik NIST** (on-demand self-service, broad network access, resource pooling, rapid elasticity, measured service) dikaitkan dengan kebutuhan kerahasiaan vs skalabilitas.
+
+### 1.1 Analisis Karakteristik Sistem
+Sistem Data Kependudukan memiliki beberapa karakteristik, yaitu:
+- Menyimpan data pribadi yang bersifat rahasia, seperti nama, NIK, alamat, dan data biometrik.
+- Diakses oleh ribuan instansi dengan kebutuhan dan hak akses yang berbeda.
+- Mengalami lonjakan akses pada waktu tertentu, seperti musim pemilu dan pendaftaran sekolah.
+- Membutuhkan kapasitas yang dapat disesuaikan dengan jumlah permintaan.
+- Infrastruktur dan penyimpanan data harus berada di bawah kendali penuh pemerintah.
+
+### 1.2 Rekomendasi Deployment Model
+Deployment model yang dipilih adalah Private Cloud karena sistem ini menyimpan data kependudukan yang bersifat rahasia. Dengan Private Cloud, pemerintah dapat mengendalikan infrastruktur, penyimpanan data, keamanan, serta hak akses setiap instansi. Untuk mengatasi lonjakan akses, pemerintah dapat menerapkan auto-scaling dan load balancing serta menyediakan kapasitas server cadangan. Dengan begitu, kebutuhan skalabilitas tetap dapat terpenuhi tanpa menggunakan infrastruktur di luar kendali pemerintah.
+
+### 1.3 Analisis Berdasarkan Lima Karakteristik NIST
+| Karakteristik NIST | Penerapan pada Sistem Data Kependudukan |
+|---|---|
+| **On-demand self-service** | Pengelola sistem dapat menambah sumber daya seperti server dan penyimpanan secara mandiri sesuai kebutuhan tanpa harus melalui proses manual setiap saat. |
+| **Broad network access** | Instansi seperti Dukcapil, kepolisian, dan bank dapat mengakses layanan melalui jaringan yang aman sesuai hak akses masing-masing. |
+| **Resource pooling** | Sumber daya seperti server, penyimpanan, dan jaringan dapat digunakan bersama serta dialokasikan sesuai kebutuhan setiap layanan tanpa mencampurkan hak akses data. |
+| **Rapid elasticity** | Kapasitas server dapat ditambah ketika terjadi lonjakan akses, seperti saat pemilu dan pendaftaran sekolah, serta dikurangi kembali ketika jumlah akses menurun, selama kapasitas fisik masih tersedia. |
+| **Measured service** | Penggunaan CPU, RAM, penyimpanan, dan jaringan dapat dipantau untuk mengetahui kebutuhan sumber daya serta menghindari penggunaan yang berlebihan. |
+
+Berdasarkan kelima karakteristik tersebut, Private Cloud dipilih karena dapat memenuhi kebutuhan kerahasiaan data, pengendalian infrastruktur, dan skalabilitas sistem, selama pemerintah menyediakan kapasitas infrastruktur yang memadai.
+
+
+
 2. **Rekomendasikan Service Model** (IaaS / PaaS / SaaS) yang tepat untuk komponen-komponen berbeda dari sistem ini (boleh berbeda service model untuk komponen berbeda, mis. database inti vs portal publik untuk pengecekan status).
 3. Jelaskan **minimal 2 risiko spesifik** dari pilihan kalian dan mitigasinya (mis. jika Hybrid Cloud dipilih: risiko sinkronisasi data antara private & public segment).
 4. Bandingkan singkat dengan **satu alternatif yang kalian tolak** — kenapa alternatif itu kurang tepat (mis. kenapa Public Cloud murni ditolak, atau kenapa Private Cloud murni dianggap kurang skalabel).
