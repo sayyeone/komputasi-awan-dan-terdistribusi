@@ -24,7 +24,7 @@ Sistem Data Kependudukan memiliki beberapa karakteristik, yaitu:
 - Infrastruktur dan penyimpanan data harus berada di bawah kendali penuh pemerintah.
 
 ### 1.2 Rekomendasi Deployment Model
-Deployment model yang dipilih adalah Private Cloud karena sistem ini menyimpan data kependudukan yang bersifat rahasia. Dengan Private Cloud, pemerintah dapat mengendalikan infrastruktur, penyimpanan data, keamanan, serta hak akses setiap instansi. Untuk mengatasi lonjakan akses, pemerintah dapat menerapkan auto-scaling dan load balancing serta menyediakan kapasitas server cadangan. Dengan begitu, kebutuhan skalabilitas tetap dapat terpenuhi tanpa menggunakan infrastruktur di luar kendali pemerintah.
+  Deployment model yang dipilih adalah Private Cloud karena sistem ini menyimpan data kependudukan yang bersifat rahasia. Dengan Private Cloud, pemerintah dapat mengendalikan infrastruktur, penyimpanan data, keamanan, serta hak akses setiap instansi. Untuk mengatasi lonjakan akses, pemerintah dapat menerapkan auto-scaling dan load balancing serta menyediakan kapasitas server cadangan. Dengan begitu, kebutuhan skalabilitas tetap dapat terpenuhi tanpa menggunakan infrastruktur di luar kendali pemerintah.
 
 ### 1.3 Analisis Berdasarkan Lima Karakteristik NIST
 | Karakteristik NIST | Penerapan pada Sistem Data Kependudukan |
@@ -35,7 +35,7 @@ Deployment model yang dipilih adalah Private Cloud karena sistem ini menyimpan d
 | **Rapid elasticity** | Kapasitas server dapat ditambah ketika terjadi lonjakan akses, seperti saat pemilu dan pendaftaran sekolah, serta dikurangi kembali ketika jumlah akses menurun, selama kapasitas fisik masih tersedia. |
 | **Measured service** | Penggunaan CPU, RAM, penyimpanan, dan jaringan dapat dipantau untuk mengetahui kebutuhan sumber daya serta menghindari penggunaan yang berlebihan. |
 
-Berdasarkan kelima karakteristik tersebut, Private Cloud dipilih karena dapat memenuhi kebutuhan kerahasiaan data, pengendalian infrastruktur, dan skalabilitas sistem, selama pemerintah menyediakan kapasitas infrastruktur yang memadai.
+  Berdasarkan kelima karakteristik tersebut, Private Cloud dipilih karena dapat memenuhi kebutuhan kerahasiaan data, pengendalian infrastruktur, dan skalabilitas sistem, selama pemerintah menyediakan kapasitas infrastruktur yang memadai.
 
 
 
