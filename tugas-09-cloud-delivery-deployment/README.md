@@ -75,6 +75,53 @@ SaaS digunakan secara terbatas untuk layanan pendukung, seperti aplikasi kolabor
 Kombinasi IaaS dan PaaS menjadi pilihan utama karena memberikan kendali terhadap infrastruktur dan data sensitif sekaligus mempermudah pengembangan serta pengelolaan aplikasi. Sementara itu, SaaS dapat dimanfaatkan secara terbatas untuk layanan pendukung yang tidak berkaitan langsung dengan data kependudukan. Seluruh layanan tetap harus ditempatkan dalam lingkungan Private Cloud yang berada di bawah kendali pemerintah.
 
 3. Jelaskan **minimal 2 risiko spesifik** dari pilihan kalian dan mitigasinya (mis. jika Hybrid Cloud dipilih: risiko sinkronisasi data antara private & public segment).
+
+## 3. Analisis Risiko dan Mitigasi - Adisty
+
+Pada Private Cloud yang dipilih, pemerintah memegang kendali penuh atas infrastruktur. Konsekuensinya, pemerintah juga menanggung seluruh tanggung jawab keamanan dan kapasitas. Berikut tiga risiko spesifik pada Sistem Data Kependudukan.
+
+### 3.1 Risiko Kebocoran Data NIK dan Biometrik
+
+**Risiko:** Karena seluruh data kependudukan terpusat, satu celah (misalnya serangan siber, kebocoran kredensial administrator, atau orang dalam yang menyalahgunakan akses) dapat membocorkan data jutaan warga sekaligus. NIK dan biometrik sangat berbahaya jika bocor, terutama biometrik karena tidak dapat diganti seperti password. Data yang bocor dapat dipakai untuk pencurian identitas dan penipuan KYC di bank. Kebocoran juga berpotensi melanggar UU Perlindungan Data Pribadi.
+
+**Mitigasi:**
+- Enkripsi data saat disimpan (*at rest*, misalnya AES-256) dan saat dikirim (*in transit*, TLS), dengan kunci dikelola di HSM (*Hardware Security Module*) milik pemerintah.
+- Data biometrik disimpan terpisah dari data identitas (NIK, nama, alamat) di segmen jaringan berbeda, serta dipetakan menggunakan token/pseudonim.
+- Autentikasi multi-faktor (MFA) dan prinsip *least privilege* untuk semua administrator.
+- Audit log yang tidak dapat diubah (*immutable*) dan deteksi anomali, misalnya pengunduhan data dalam jumlah besar.
+- Backup terenkripsi yang disimpan offline dan diuji pemulihannya secara berkala.
+
+### 3.2 Risiko Akses Tidak Sah oleh Instansi
+
+**Risiko:** Ribuan instansi (Dukcapil daerah, kepolisian, bank) memiliki kebutuhan dan hak akses berbeda. Ada risiko instansi mengakses data di luar kewenangannya, misalnya bank menarik data biometrik padahal hanya perlu verifikasi KYC. Selain itu, kredensial atau API key milik instansi yang kurang aman dapat disalahgunakan pihak ketiga. Ini juga berkaitan dengan karakteristik *broad network access* yang membuka banyak titik akses.
+
+**Mitigasi:**
+- Kontrol akses berbasis peran dan atribut (RBAC/ABAC) per instansi, sehingga bank hanya mendapat jawaban verifikasi (cocok/tidak cocok), bukan data mentah.
+- API Gateway dengan autentikasi dan otorisasi per instansi (OAuth2/mutual TLS), pembatasan laju permintaan (*rate limiting*), serta pembatasan alamat IP yang diizinkan.
+- Pencatatan setiap permintaan data (siapa, kapan, data apa, untuk tujuan apa) dan peninjauan audit berkala.
+- Rotasi API key/sertifikat secara berkala serta pencabutan akses segera jika terjadi penyalahgunaan.
+
+### 3.3 Risiko Lonjakan Akses dan Gangguan Layanan
+
+**Risiko:** Pada Private Cloud, kapasitas dibatasi oleh perangkat fisik milik pemerintah. Saat lonjakan akses (pemilu, pendaftaran sekolah) *rapid elasticity* hanya berjalan sampai batas kapasitas fisik tersedia. Jika permintaan melebihi kapasitas, layanan melambat atau down, sehingga verifikasi identitas oleh instansi dan bank terhenti. Lonjakan juga dapat menyerupai serangan DDoS sehingga sulit dibedakan.
+
+**Mitigasi:**
+- Perencanaan kapasitas (*capacity planning*) berdasarkan data lonjakan tahun-tahun sebelumnya, dengan cadangan kapasitas (*buffer*) di atas puncak beban.
+- *Auto-scaling* dan *load balancing* yang dikonfigurasi sebelum musim puncak (*pre-scaling*).
+- Menggunakan *caching* dan antrian permintaan (*queue*) untuk meredam beban pada database inti.
+- Pemisahan beban baca dan tulis (*read replica*) serta penerapan prioritas layanan untuk instansi kritis.
+- Perlindungan DDoS dan *rate limiting*, serta pusat data cadangan (*disaster recovery site*) di lokasi berbeda yang tetap berada di bawah kendali pemerintah.
+- Pemantauan (*measured service*) dengan peringatan dini saat penggunaan CPU/RAM mendekati batas.
+
+### 3.4 Ringkasan Risiko dan Mitigasi
+
+| Risiko | Dampak | Mitigasi Utama |
+|---|---|---|
+| Kebocoran data NIK dan biometrik | Pencurian identitas, pelanggaran UU PDP, hilangnya kepercayaan publik | Enkripsi + HSM, pemisahan data biometrik, MFA, audit log |
+| Akses tidak sah oleh instansi | Penyalahgunaan data di luar kewenangan | RBAC/ABAC, API Gateway, pembatasan data per instansi, audit akses |
+| Lonjakan akses dan gangguan layanan | Layanan verifikasi down saat pemilu/pendaftaran sekolah | Capacity planning, auto-scaling, caching, DR site, perlindungan DDoS |
+
+
 4. Bandingkan singkat dengan **satu alternatif yang kalian tolak** — kenapa alternatif itu kurang tepat (mis. kenapa Public Cloud murni ditolak, atau kenapa Private Cloud murni dianggap kurang skalabel).
 
 ## Struktur Submission
