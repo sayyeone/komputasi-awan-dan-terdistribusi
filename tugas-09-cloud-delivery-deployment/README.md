@@ -124,6 +124,22 @@ Pada Private Cloud yang dipilih, pemerintah memegang kendali penuh atas infrastr
 
 4. Bandingkan singkat dengan **satu alternatif yang kalian tolak** — kenapa alternatif itu kurang tepat (mis. kenapa Public Cloud murni ditolak, atau kenapa Private Cloud murni dianggap kurang skalabel).
 
+Alternatif yang kami tolak adalah Public Cloud murni. Kelebihan Public Cloud ada di skalabilitas, karena penyedia layanannya punya kapasitas yang sangat besar. Waktu akses melonjak saat pemilu atau pendaftaran sekolah, sumber daya bisa ditambah dengan cepat dan biayanya mengikuti pemakaian. Tapi untuk sistem yang menyimpan NIK dan data biometrik seluruh warga, kelebihan itu belum cukup.
+
+Dari sisi keamanan, Public Cloud itu multi-tenant, jadi infrastruktur fisiknya dipakai bersama oleh banyak pelanggan. Pemerintah juga cuma mengendalikan sebagian lapisan, sisanya dipegang penyedia, jadi tanggung jawab keamanan terbagi dan pemerintah tidak bisa memastikan sendiri semua lapisannya aman. Soal kendali infrastruktur, lokasi server, kebijakan penyedia, dan akses staf penyedia semuanya di luar kendali pemerintah. Ini bertentangan langsung dengan syarat studi kasus bahwa data tidak boleh berada di infrastruktur yang tidak dikendalikan penuh oleh negara. Apalagi biometrik tidak bisa diganti seperti password, jadi kalau bocor dampaknya permanen.
+
+Perbandingan Private Cloud dan Public Cloud murni dapat dilihat pada tabel berikut.
+
+| Aspek | Private Cloud (dipilih) | Public Cloud murni (ditolak) |
+|---|---|---|
+| Kendali infrastruktur dan lokasi data | Sepenuhnya di tangan pemerintah | Sebagian dipegang penyedia layanan |
+| Keamanan data sensitif | Isolasi dan kunci enkripsi (HSM) dikelola sendiri | Infrastruktur dipakai bersama pelanggan lain |
+| Skalabilitas | Terbatas kapasitas fisik, tapi bisa dimitigasi | Hampir tidak terbatas |
+| Kesesuaian dengan syarat studi kasus | Memenuhi | Tidak memenuhi syarat kendali penuh oleh negara |
+
+Private Cloud memang punya kelemahan di skalabilitas karena dibatasi kapasitas fisik milik pemerintah. Tapi kelemahan ini masih bisa ditutup lewat capacity planning, pre-scaling sebelum musim puncak, caching, dan DR site seperti yang sudah dibahas di bagian 3.3. Kelemahan Public Cloud di kendali data tidak bisa ditutup selama modelnya tetap Public. Jadi alasan kami memilih Private Cloud adalah karena kekurangannya masih bisa dimitigasi, sedangkan kekurangan Public Cloud mengenai syarat paling utama dari sistem ini.
+
+
 ## Struktur Submission
 
 ```
