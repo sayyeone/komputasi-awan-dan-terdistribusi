@@ -13,7 +13,9 @@ Pemerintah ingin membangun **Sistem Data Kependudukan** (nama, NIK, alamat, data
 
 ## Tugas Kelompok
 
-1. **Rekomendasikan Deployment Model** (Public / Private / Hybrid / Community Cloud) yang paling tepat untuk sistem ini. Jelaskan alasannya berdasarkan **karakteristik NIST** (on-demand self-service, broad network access, resource pooling, rapid elasticity, measured service) dikaitkan dengan kebutuhan kerahasiaan vs skalabilitas.
+# 1. Rekomendasikan Deployment Model - Glory Leonthine Angi'
+
+(Public / Private / Hybrid / Community Cloud) yang paling tepat untuk sistem ini. Jelaskan alasannya berdasarkan **karakteristik NIST** (on-demand self-service, broad network access, resource pooling, rapid elasticity, measured service) dikaitkan dengan kebutuhan kerahasiaan vs skalabilitas.
 
 ### 1.1 Analisis Karakteristik Sistem
 Sistem Data Kependudukan memiliki beberapa karakteristik, yaitu:
@@ -39,9 +41,11 @@ Sistem Data Kependudukan memiliki beberapa karakteristik, yaitu:
 
 
 
-2. **Rekomendasikan Service Model** (IaaS / PaaS / SaaS) yang tepat untuk komponen-komponen berbeda dari sistem ini (boleh berbeda service model untuk komponen berbeda, mis. database inti vs portal publik untuk pengecekan status).
+2. **Rekomendasikan Service Model**
 
-## 2. Rekomendasi Service Model
+(IaaS / PaaS / SaaS) yang tepat untuk komponen-komponen berbeda dari sistem ini (boleh berbeda service model untuk komponen berbeda, mis. database inti vs portal publik untuk pengecekan status).
+
+## 2. Rekomendasi Service Model - Difa Aulia
 
 Berdasarkan deployment model yang dipilih, yaitu **Private Cloud**, Sistem Data Kependudukan menggunakan kombinasi service model IaaS dan PaaS, serta SaaS secara terbatas. Pemilihan ini disesuaikan dengan kebutuhan pengendalian data, pengelolaan aplikasi, dan akses oleh berbagai instansi.
 
@@ -56,7 +60,7 @@ Berdasarkan deployment model yang dipilih, yaitu **Private Cloud**, Sistem Data 
 | Dashboard monitoring dan administrasi | **PaaS** | Mendukung pemantauan penggunaan sistem, aktivitas akses, dan kondisi layanan. |
 | Aplikasi kolaborasi internal dan helpdesk | **SaaS** | Digunakan untuk kebutuhan pendukung yang tidak memproses atau menyimpan data kependudukan sensitif. |
 
-### 2.2 Alasan Pemilihan Service Model
+### 2.2 Alasan Pemilihan Service Model 
 
 **1. Infrastructure as a Service (IaaS)**
 
@@ -121,7 +125,7 @@ Pada Private Cloud yang dipilih, pemerintah memegang kendali penuh atas infrastr
 | Akses tidak sah oleh instansi | Penyalahgunaan data di luar kewenangan | RBAC/ABAC, API Gateway, pembatasan data per instansi, audit akses |
 | Lonjakan akses dan gangguan layanan | Layanan verifikasi down saat pemilu/pendaftaran sekolah | Capacity planning, auto-scaling, caching, DR site, perlindungan DDoS |
 
-4. Perbandingan dengan Alternatif yang Ditolak
+## 4. Perbandingan dengan Alternatif yang Ditolak - Yolanda Elva Angelica
 
 Bandingkan singkat dengan **satu alternatif yang kalian tolak** — kenapa alternatif itu kurang tepat (mis. kenapa Public Cloud murni ditolak, atau kenapa Private Cloud murni dianggap kurang skalabel).
 
