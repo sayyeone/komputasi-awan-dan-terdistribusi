@@ -13,7 +13,7 @@
 
 ## Pembagian kontribusi
 - Bagian 1 (analisis karakteristik dan deployment model): Glory Leonthine Angi'
-- Bagian 2 (service model): [Difa Aulia
+- Bagian 2 (service model): Difa Aulia
 - Bagian 3 (risiko dan mitigasi): Adisty Fatika Ardani
 - Bagian 4 (analisis alternatif dan integrasi dokumentasi): Yolanda Elva Angelica
 
