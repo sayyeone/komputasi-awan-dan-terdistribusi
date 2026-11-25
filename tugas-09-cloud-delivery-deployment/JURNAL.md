@@ -12,10 +12,10 @@
 - SaaS dipakai untuk kolaborasi internal dan helpdesk, yang tidak menyimpan data kependudukan.
 
 ## Pembagian kontribusi
-- Bagian 1 (analisis karakteristik dan deployment model): [nama]
-- Bagian 2 (service model): [nama]
-- Bagian 3 (risiko dan mitigasi): Adisty
-- Bagian 4 (analisis alternatif dan integrasi dokumentasi): Ola
+- Bagian 1 (analisis karakteristik dan deployment model): Glory Leonthine Angi'
+- Bagian 2 (service model): [Difa Aulia
+- Bagian 3 (risiko dan mitigasi): Adisty Fatika Ardani
+- Bagian 4 (analisis alternatif dan integrasi dokumentasi): Yolanda Elva Angelica
 
 ## Log Penggunaan AI (Level 2)
 
