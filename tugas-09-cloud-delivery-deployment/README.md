@@ -121,8 +121,9 @@ Pada Private Cloud yang dipilih, pemerintah memegang kendali penuh atas infrastr
 | Akses tidak sah oleh instansi | Penyalahgunaan data di luar kewenangan | RBAC/ABAC, API Gateway, pembatasan data per instansi, audit akses |
 | Lonjakan akses dan gangguan layanan | Layanan verifikasi down saat pemilu/pendaftaran sekolah | Capacity planning, auto-scaling, caching, DR site, perlindungan DDoS |
 
+4. Perbandingan dengan Alternatif yang Ditolak
 
-4. Bandingkan singkat dengan **satu alternatif yang kalian tolak** — kenapa alternatif itu kurang tepat (mis. kenapa Public Cloud murni ditolak, atau kenapa Private Cloud murni dianggap kurang skalabel).
+Bandingkan singkat dengan **satu alternatif yang kalian tolak** — kenapa alternatif itu kurang tepat (mis. kenapa Public Cloud murni ditolak, atau kenapa Private Cloud murni dianggap kurang skalabel).
 
 Alternatif yang kami tolak adalah Public Cloud murni. Kelebihan Public Cloud ada di skalabilitas, karena penyedia layanannya punya kapasitas yang sangat besar. Waktu akses melonjak saat pemilu atau pendaftaran sekolah, sumber daya bisa ditambah dengan cepat dan biayanya mengikuti pemakaian. Tapi untuk sistem yang menyimpan NIK dan data biometrik seluruh warga, kelebihan itu belum cukup.
 
